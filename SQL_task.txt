@@ -1,0 +1,82 @@
+CREATE TABLE attendance_table (
+    Attendance_ID INT(11) NOT NULL AUTO_INCREMENT,
+    Emp_ID INT NOT NULL,
+    Date_ DATE,
+    Time_in TIME,
+    Time_out TIME,
+    Shift_timing VARCHAR(20),
+    Effective_hours VARCHAR(20),
+    Employee_status VARCHAR(20),
+    Request_Id VARCHAR(20),
+    PRIMARY KEY (Attendance_ID)
+);
+CREATE TABLE Employee_detail (
+    Emp_id INT PRIMARY KEY,
+    first_name VARCHAR(15),
+    last_name VARCHAR(15),
+    date_of_birth DATE,
+    date_of_hire DATE,
+    Designation VARCHAR(20),
+    Dept_Id INT,
+    manager_id INT,
+    contact_num INT,
+    Email_ID VARCHAR(30)
+);
+
+CREATE TABLE leave_detail (
+    Leave_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Req_ID VARCHAR(10) UNIQUE,
+    Employee_ID INT NOT NULL,
+    Leave_opening INT NOT NULL,
+    Type_of_leave VARCHAR(20),
+    Fom_date DATE NOT NULL,
+    To_date DATE NOT NULL,
+    day_count INT NOT NULL,
+    Approver_id INT,
+    Leave_status VARCHAR(20),
+    FOREIGN KEY (Employee_ID)
+        REFERENCES Employee_detail (Emp_id)
+        ON DELETE CASCADE);
+        
+insert into attendance_table(Attendance_ID,Emp_ID,Date_,Time_in,
+Time_out,Shift_timing,Effective_hours,Employee_status,Request_Id)
+values
+(1,4001,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(2,4002,'2021-02-11','10:00','19:00','10am-7pm','09:00','Present','-'),
+(3,4003,'2021-02-11','09:00','18:00','9am-6pm','00:00','Absent','PR01'),
+(4,4004,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','PR02'),
+(5,4005,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(6,4001,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(7,4002,'2021-02-11','10:00','19:00','10am-7pm','09:00','Present','-'),
+(8,4003,'2021-02-11','09:00','18:00','9am-6pm','00:00','Absent','PR01'),
+(9,4004,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','PR02'),
+(10,4005,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(11,4001,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(12,4002,'2021-02-11','10:00','19:00','10am-7pm','09:00','Present','-'),
+(13,4003,'2021-02-11','09:00','18:00','9am-6pm','00:00','Absent','PR01'),
+(14,4004,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','PR02'),
+(15,4005,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(16,4001,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(17,4002,'2021-02-11','10:00','19:00','10am-7pm','09:00','Present','-'),
+(18,4003,'2021-02-11','09:00','18:00','9am-6pm','00:00','Absent','PR01'),
+(19,4004,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','PR02'),
+(20,4005,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(21,4001,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-'),
+(22,4002,'2021-02-11','10:00','19:00','10am-7pm','09:00','Present','-'),
+(23,4003,'2021-02-11','09:00','18:00','9am-6pm','00:00','Absent','PR01'),
+(24,4004,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','PR02'),
+(25,4005,'2021-02-11','09:00','18:00','9am-6pm','09:00','Present','-')
+
+
+
+select  group_concat(ad.date_)as date_list,ed.first_name from attendance_table ad left join emp_detail ed on ad.emp_id=ed.emp_id where employee_status ='Absent' group by ad.emp_id;
+
+-- select *,(select first_name from emp_detail where emp_id in (select employee_id from leave_detail)) as employee from emp_detail;
+
+select * from leave_detail;
+
+
+select sum(day_count) as leav,employee_id  from leave_detail group by employee_id;
+
+select ed.first_name,month(ld.fom_date) as mont,sum(ld.day_count) as leav from emp_detail ed right join leave_detail ld on ed.emp_id=ld.employee_id group by emp_id,mont;
+select datediff('2021-02-02','2021-02-01')
